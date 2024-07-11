@@ -1,0 +1,1081 @@
+Training and evaluating linear_nofinetune_resnet model
+/usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet18_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet18_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  11.2 M  
+fwd MACs:                                                               151.6 GMACs
+fwd FLOPs:                                                              303.878 GFLOPS
+fwd+bwd MACs:                                                           454.801 GMACs
+fwd+bwd FLOPs:                                                          911.634 GFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+ResNet(
+  11.2 M = 100% Params, 151.6 GMACs = 100% MACs, 303.88 GFLOPS = 100% FLOPs
+  (conv1): Conv2d(9.41 K = 0.084% Params, 9.87 GMACs = 6.5072% MACs, 19.73 GFLOPS = 6.4927% FLOPs, 3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 134.22 MFLOPS = 0.0442% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, inplace=True)
+  (maxpool): MaxPool2d(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    147.97 K = 1.3213% Params, 38.65 GMACs = 25.4978% MACs, 77.51 GFLOPS = 25.5072% FLOPs
+    (0): BasicBlock(
+      73.98 K = 0.6607% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      73.98 K = 0.6607% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    525.57 K = 4.6932% Params, 34.36 GMACs = 22.6647% MACs, 68.84 GFLOPS = 22.6528% FLOPs
+    (0): BasicBlock(
+      230.14 K = 2.0551% Params, 15.03 GMACs = 9.9158% MACs, 30.13 GFLOPS = 9.9158% FLOPs
+      (conv1): Conv2d(73.73 K = 0.6584% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        8.45 K = 0.0754% Params, 536.87 MMACs = 0.3541% MACs, 1.09 GFLOPS = 0.3589% FLOPs
+        (0): Conv2d(8.19 K = 0.0732% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      295.42 K = 2.6381% Params, 19.33 GMACs = 12.7489% MACs, 38.71 GFLOPS = 12.737% FLOPs
+      (conv1): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    2.1 M = 18.7498% Params, 34.36 GMACs = 22.6647% MACs, 68.78 GFLOPS = 22.6335% FLOPs
+    (0): BasicBlock(
+      919.04 K = 8.2068% Params, 15.03 GMACs = 9.9158% MACs, 30.1 GFLOPS = 9.9047% FLOPs
+      (conv1): Conv2d(294.91 K = 2.6335% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        33.28 K = 0.2972% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3561% FLOPs
+        (0): Conv2d(32.77 K = 0.2926% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      1.18 M = 10.5431% Params, 19.33 GMACs = 12.7489% MACs, 38.68 GFLOPS = 12.7287% FLOPs
+      (conv1): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    8.39 M = 74.9536% Params, 34.36 GMACs = 22.6647% MACs, 68.75 GFLOPS = 22.6238% FLOPs
+    (0): BasicBlock(
+      3.67 M = 32.7996% Params, 15.03 GMACs = 9.9158% MACs, 30.08 GFLOPS = 9.8992% FLOPs
+      (conv1): Conv2d(1.18 M = 10.5339% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        132.1 K = 1.1796% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3547% FLOPs
+        (0): Conv2d(131.07 K = 1.1704% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      4.72 M = 42.1539% Params, 19.33 GMACs = 12.7489% MACs, 38.67 GFLOPS = 12.7246% FLOPs
+      (conv1): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(0 = 0% Params, 0 MACs = 0% MACs, 2.1 MFLOPS = 0.0007% FLOPs, output_size=(1, 1))
+  (fc): Linear(22.06 K = 0.197% Params, 1.41 MMACs = 0.0009% MACs, 2.82 MFLOPS = 0.0009% FLOPs, in_features=512, out_features=43, bias=True)
+)
+---------------------------------------------------------------------------------------------------
+Epoch 1/30: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 1/30: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 1/30
+Train Loss: 2.7438 Train Accuracy: 0.3511
+Val Loss: 1.5870 Val Accuracy: 0.5372
+Epoch 2/30: 100%|██████████| 42/42 [00:15<00:00,  2.78it/s]
+Epoch 2/30: 100%|██████████| 5/5 [00:01<00:00,  3.73it/s]
+Epoch 2/30
+Train Loss: 0.6845 Train Accuracy: 0.8303
+Val Loss: 0.6612 Val Accuracy: 0.7804
+Epoch 3/30: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 3/30: 100%|██████████| 5/5 [00:01<00:00,  3.67it/s]
+Epoch 3/30
+Train Loss: 0.2787 Train Accuracy: 0.9303
+Val Loss: 0.5551 Val Accuracy: 0.7973
+Epoch 4/30: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 4/30: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 4/30
+Train Loss: 0.2610 Train Accuracy: 0.9322
+Val Loss: 0.7562 Val Accuracy: 0.7669
+Epoch 5/30: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 5/30: 100%|██████████| 5/5 [00:01<00:00,  3.52it/s]
+Epoch 5/30
+Train Loss: 0.3304 Train Accuracy: 0.9053
+Val Loss: 2.2247 Val Accuracy: 0.5676
+Epoch 6/30: 100%|██████████| 42/42 [00:14<00:00,  2.95it/s]
+Epoch 6/30: 100%|██████████| 5/5 [00:02<00:00,  2.26it/s]
+Epoch 6/30
+Train Loss: 0.5681 Train Accuracy: 0.8477
+Val Loss: 2.2067 Val Accuracy: 0.5101
+Epoch 7/30: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 7/30: 100%|██████████| 5/5 [00:01<00:00,  3.70it/s]
+Epoch 7/30
+Train Loss: 0.5259 Train Accuracy: 0.8523
+Val Loss: 2.1624 Val Accuracy: 0.5574
+Epoch 8/30: 100%|██████████| 42/42 [00:13<00:00,  3.02it/s]
+Epoch 8/30: 100%|██████████| 5/5 [00:01<00:00,  3.67it/s]
+Epoch 8/30
+Train Loss: 0.5395 Train Accuracy: 0.8477
+Val Loss: 1.8269 Val Accuracy: 0.6081
+Epoch 9/30: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 9/30: 100%|██████████| 5/5 [00:01<00:00,  3.65it/s]
+Epoch 9/30
+Train Loss: 0.4675 Train Accuracy: 0.8712
+Val Loss: 1.8816 Val Accuracy: 0.5541
+Epoch 10/30: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 10/30: 100%|██████████| 5/5 [00:01<00:00,  3.63it/s]
+Epoch 10/30
+Train Loss: 0.2943 Train Accuracy: 0.9133
+Val Loss: 1.7668 Val Accuracy: 0.5811
+Epoch 11/30: 100%|██████████| 42/42 [00:13<00:00,  3.04it/s]
+Epoch 11/30: 100%|██████████| 5/5 [00:01<00:00,  3.65it/s]
+Epoch 11/30
+Train Loss: 0.2744 Train Accuracy: 0.9189
+Val Loss: 1.5370 Val Accuracy: 0.6520
+Epoch 12/30: 100%|██████████| 42/42 [00:13<00:00,  3.07it/s]
+Epoch 12/30: 100%|██████████| 5/5 [00:01<00:00,  3.74it/s]
+Epoch 12/30
+Train Loss: 0.2544 Train Accuracy: 0.9299
+Val Loss: 1.2349 Val Accuracy: 0.6723
+Epoch 13/30: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 13/30: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 13/30
+Train Loss: 0.2388 Train Accuracy: 0.9269
+Val Loss: 0.7750 Val Accuracy: 0.7770
+Epoch 14/30: 100%|██████████| 42/42 [00:14<00:00,  2.93it/s]
+Epoch 14/30: 100%|██████████| 5/5 [00:02<00:00,  2.29it/s]
+Epoch 14/30
+Train Loss: 0.2266 Train Accuracy: 0.9394
+Val Loss: 1.0552 Val Accuracy: 0.7534
+Epoch 15/30: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 15/30: 100%|██████████| 5/5 [00:01<00:00,  3.51it/s]
+Epoch 15/30
+Train Loss: 0.1865 Train Accuracy: 0.9447
+Val Loss: 0.5957 Val Accuracy: 0.8209
+Epoch 16/30: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 16/30: 100%|██████████| 5/5 [00:01<00:00,  3.72it/s]
+Epoch 16/30
+Train Loss: 0.1550 Train Accuracy: 0.9576
+Val Loss: 0.9486 Val Accuracy: 0.7264
+Epoch 17/30: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 17/30: 100%|██████████| 5/5 [00:01<00:00,  3.55it/s]
+Epoch 17/30
+Train Loss: 0.1632 Train Accuracy: 0.9519
+Val Loss: 0.7350 Val Accuracy: 0.7838
+Epoch 18/30: 100%|██████████| 42/42 [00:13<00:00,  3.11it/s]
+Epoch 18/30: 100%|██████████| 5/5 [00:01<00:00,  3.79it/s]
+Epoch 18/30
+Train Loss: 0.1498 Train Accuracy: 0.9568
+Val Loss: 0.8956 Val Accuracy: 0.7872
+Epoch 19/30: 100%|██████████| 42/42 [00:13<00:00,  3.08it/s]
+Epoch 19/30: 100%|██████████| 5/5 [00:01<00:00,  3.64it/s]
+Epoch 19/30
+Train Loss: 0.1117 Train Accuracy: 0.9701
+Val Loss: 0.6553 Val Accuracy: 0.8277
+Epoch 20/30: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 20/30: 100%|██████████| 5/5 [00:01<00:00,  3.66it/s]
+Epoch 20/30
+Train Loss: 0.1149 Train Accuracy: 0.9659
+Val Loss: 0.5791 Val Accuracy: 0.8277
+Epoch 21/30: 100%|██████████| 42/42 [00:14<00:00,  3.00it/s]
+Epoch 21/30: 100%|██████████| 5/5 [00:01<00:00,  3.58it/s]
+Epoch 21/30
+Train Loss: 0.0850 Train Accuracy: 0.9742
+Val Loss: 0.5355 Val Accuracy: 0.8615
+Epoch 22/30: 100%|██████████| 42/42 [00:14<00:00,  2.93it/s]
+Epoch 22/30: 100%|██████████| 5/5 [00:01<00:00,  2.52it/s]
+Epoch 22/30
+Train Loss: 0.0606 Train Accuracy: 0.9818
+Val Loss: 0.5265 Val Accuracy: 0.8378
+Epoch 23/30: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 23/30: 100%|██████████| 5/5 [00:01<00:00,  3.24it/s]
+Epoch 23/30
+Train Loss: 0.0607 Train Accuracy: 0.9803
+Val Loss: 0.4885 Val Accuracy: 0.8514
+Epoch 24/30: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 24/30: 100%|██████████| 5/5 [00:01<00:00,  3.67it/s]
+Epoch 24/30
+Train Loss: 0.0468 Train Accuracy: 0.9890
+Val Loss: 0.4725 Val Accuracy: 0.8547
+Epoch 25/30: 100%|██████████| 42/42 [00:13<00:00,  3.09it/s]
+Epoch 25/30: 100%|██████████| 5/5 [00:01<00:00,  3.60it/s]
+Epoch 25/30
+Train Loss: 0.0419 Train Accuracy: 0.9898
+Val Loss: 0.4503 Val Accuracy: 0.8615
+Epoch 26/30: 100%|██████████| 42/42 [00:13<00:00,  3.07it/s]
+Epoch 26/30: 100%|██████████| 5/5 [00:01<00:00,  3.57it/s]
+Epoch 26/30
+Train Loss: 0.0401 Train Accuracy: 0.9886
+Val Loss: 0.4627 Val Accuracy: 0.8682
+Epoch 27/30: 100%|██████████| 42/42 [00:13<00:00,  3.02it/s]
+Epoch 27/30: 100%|██████████| 5/5 [00:01<00:00,  3.66it/s]
+Epoch 27/30
+Train Loss: 0.0424 Train Accuracy: 0.9909
+Val Loss: 0.4512 Val Accuracy: 0.8716
+Epoch 28/30: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 28/30: 100%|██████████| 5/5 [00:01<00:00,  3.60it/s]
+Epoch 28/30
+Train Loss: 0.0442 Train Accuracy: 0.9898
+Val Loss: 0.4725 Val Accuracy: 0.8581
+Epoch 29/30: 100%|██████████| 42/42 [00:14<00:00,  2.98it/s]
+Epoch 29/30: 100%|██████████| 5/5 [00:01<00:00,  3.44it/s]
+Epoch 29/30
+Train Loss: 0.0535 Train Accuracy: 0.9886
+Val Loss: 0.4575 Val Accuracy: 0.8682
+Epoch 30/30: 100%|██████████| 42/42 [00:14<00:00,  2.94it/s]
+Epoch 30/30: 100%|██████████| 5/5 [00:02<00:00,  2.39it/s]
+Epoch 30/30
+Train Loss: 0.0438 Train Accuracy: 0.9879
+Val Loss: 0.4491 Val Accuracy: 0.8750
+Training and evaluating linear_finetune_resnet model
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  22.06 K 
+fwd MACs:                                                               151.6 GMACs
+fwd FLOPs:                                                              303.878 GFLOPS
+fwd+bwd MACs:                                                           454.801 GMACs
+fwd+bwd FLOPs:                                                          911.634 GFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+ResNet(
+  22.06 K = 100% Params, 151.6 GMACs = 100% MACs, 303.88 GFLOPS = 100% FLOPs
+  (conv1): Conv2d(0 = 0% Params, 9.87 GMACs = 6.5072% MACs, 19.73 GFLOPS = 6.4927% FLOPs, 3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 134.22 MFLOPS = 0.0442% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, inplace=True)
+  (maxpool): MaxPool2d(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    0 = 0% Params, 38.65 GMACs = 25.4978% MACs, 77.51 GFLOPS = 25.5072% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6647% MACs, 68.84 GFLOPS = 22.6528% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9158% MACs, 30.13 GFLOPS = 9.9158% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.09 GFLOPS = 0.3589% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7489% MACs, 38.71 GFLOPS = 12.737% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6647% MACs, 68.78 GFLOPS = 22.6335% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9158% MACs, 30.1 GFLOPS = 9.9047% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3561% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7489% MACs, 38.68 GFLOPS = 12.7287% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6647% MACs, 68.75 GFLOPS = 22.6238% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9158% MACs, 30.08 GFLOPS = 9.8992% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3547% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7489% MACs, 38.67 GFLOPS = 12.7246% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(0 = 0% Params, 0 MACs = 0% MACs, 2.1 MFLOPS = 0.0007% FLOPs, output_size=(1, 1))
+  (fc): Linear(22.06 K = 100% Params, 1.41 MMACs = 0.0009% MACs, 2.82 MFLOPS = 0.0009% FLOPs, in_features=512, out_features=43, bias=True)
+)
+---------------------------------------------------------------------------------------------------
+Epoch 1/6: 100%|██████████| 42/42 [00:09<00:00,  4.28it/s]
+Epoch 1/6: 100%|██████████| 5/5 [00:02<00:00,  2.30it/s]
+Epoch 1/6
+Train Loss: 4.5557 Train Accuracy: 0.0534
+Val Loss: 4.6042 Val Accuracy: 0.0473
+Epoch 2/6: 100%|██████████| 42/42 [00:09<00:00,  4.32it/s]
+Epoch 2/6: 100%|██████████| 5/5 [00:01<00:00,  3.11it/s]
+Epoch 2/6
+Train Loss: 4.1452 Train Accuracy: 0.0852
+Val Loss: 3.9871 Val Accuracy: 0.0574
+Epoch 3/6: 100%|██████████| 42/42 [00:10<00:00,  3.84it/s]
+Epoch 3/6: 100%|██████████| 5/5 [00:01<00:00,  3.69it/s]
+Epoch 3/6
+Train Loss: 3.6802 Train Accuracy: 0.1129
+Val Loss: 3.6780 Val Accuracy: 0.0676
+Epoch 4/6: 100%|██████████| 42/42 [00:10<00:00,  3.82it/s]
+Epoch 4/6: 100%|██████████| 5/5 [00:01<00:00,  3.56it/s]
+Epoch 4/6
+Train Loss: 3.4656 Train Accuracy: 0.1333
+Val Loss: 3.5587 Val Accuracy: 0.0777
+Epoch 5/6: 100%|██████████| 42/42 [00:11<00:00,  3.80it/s]
+Epoch 5/6: 100%|██████████| 5/5 [00:01<00:00,  3.60it/s]
+Epoch 5/6
+Train Loss: 3.3510 Train Accuracy: 0.1466
+Val Loss: 3.4947 Val Accuracy: 0.0878
+Epoch 6/6: 100%|██████████| 42/42 [00:11<00:00,  3.67it/s]
+Epoch 6/6: 100%|██████████| 5/5 [00:01<00:00,  3.58it/s]
+Epoch 6/6
+Train Loss: 3.3081 Train Accuracy: 0.1466
+Val Loss: 3.5091 Val Accuracy: 0.0845
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  11.2 M  
+fwd MACs:                                                               151.6 GMACs
+fwd FLOPs:                                                              303.878 GFLOPS
+fwd+bwd MACs:                                                           454.801 GMACs
+fwd+bwd FLOPs:                                                          911.634 GFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+ResNet(
+  11.2 M = 100% Params, 151.6 GMACs = 100% MACs, 303.88 GFLOPS = 100% FLOPs
+  (conv1): Conv2d(9.41 K = 0.084% Params, 9.87 GMACs = 6.5072% MACs, 19.73 GFLOPS = 6.4927% FLOPs, 3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 134.22 MFLOPS = 0.0442% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, inplace=True)
+  (maxpool): MaxPool2d(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    147.97 K = 1.3213% Params, 38.65 GMACs = 25.4978% MACs, 77.51 GFLOPS = 25.5072% FLOPs
+    (0): BasicBlock(
+      73.98 K = 0.6607% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      73.98 K = 0.6607% Params, 19.33 GMACs = 12.7489% MACs, 38.76 GFLOPS = 12.7536% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3292% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    525.57 K = 4.6932% Params, 34.36 GMACs = 22.6647% MACs, 68.84 GFLOPS = 22.6528% FLOPs
+    (0): BasicBlock(
+      230.14 K = 2.0551% Params, 15.03 GMACs = 9.9158% MACs, 30.13 GFLOPS = 9.9158% FLOPs
+      (conv1): Conv2d(73.73 K = 0.6584% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        8.45 K = 0.0754% Params, 536.87 MMACs = 0.3541% MACs, 1.09 GFLOPS = 0.3589% FLOPs
+        (0): Conv2d(8.19 K = 0.0732% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      295.42 K = 2.6381% Params, 19.33 GMACs = 12.7489% MACs, 38.71 GFLOPS = 12.737% FLOPs
+      (conv1): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.3167% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0023% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    2.1 M = 18.7498% Params, 34.36 GMACs = 22.6647% MACs, 68.78 GFLOPS = 22.6335% FLOPs
+    (0): BasicBlock(
+      919.04 K = 8.2068% Params, 15.03 GMACs = 9.9158% MACs, 30.1 GFLOPS = 9.9047% FLOPs
+      (conv1): Conv2d(294.91 K = 2.6335% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        33.28 K = 0.2972% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3561% FLOPs
+        (0): Conv2d(32.77 K = 0.2926% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      1.18 M = 10.5431% Params, 19.33 GMACs = 12.7489% MACs, 38.68 GFLOPS = 12.7287% FLOPs
+      (conv1): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.267% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0046% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    8.39 M = 74.9536% Params, 34.36 GMACs = 22.6647% MACs, 68.75 GFLOPS = 22.6238% FLOPs
+    (0): BasicBlock(
+      3.67 M = 32.7996% Params, 15.03 GMACs = 9.9158% MACs, 30.08 GFLOPS = 9.8992% FLOPs
+      (conv1): Conv2d(1.18 M = 10.5339% Params, 4.83 GMACs = 3.1872% MACs, 9.66 GFLOPS = 3.1801% FLOPs, 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        132.1 K = 1.1796% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3547% FLOPs
+        (0): Conv2d(131.07 K = 1.1704% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      4.72 M = 42.1539% Params, 19.33 GMACs = 12.7489% MACs, 38.67 GFLOPS = 12.7246% FLOPs
+      (conv1): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 21.0678% Params, 9.66 GMACs = 6.3744% MACs, 19.33 GFLOPS = 6.3602% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0091% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(0 = 0% Params, 0 MACs = 0% MACs, 2.1 MFLOPS = 0.0007% FLOPs, output_size=(1, 1))
+  (fc): Linear(22.06 K = 0.197% Params, 1.41 MMACs = 0.0009% MACs, 2.82 MFLOPS = 0.0009% FLOPs, in_features=512, out_features=43, bias=True)
+)
+---------------------------------------------------------------------------------------------------
+Epoch 1/24: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 1/24: 100%|██████████| 5/5 [00:01<00:00,  3.56it/s]
+Epoch 1/24
+Train Loss: 2.9960 Train Accuracy: 0.2265
+Val Loss: 2.8146 Val Accuracy: 0.2872
+Epoch 2/24: 100%|██████████| 42/42 [00:14<00:00,  2.99it/s]
+Epoch 2/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 2/24
+Train Loss: 2.1551 Train Accuracy: 0.4417
+Val Loss: 1.9320 Val Accuracy: 0.4628
+Epoch 3/24: 100%|██████████| 42/42 [00:13<00:00,  3.00it/s]
+Epoch 3/24: 100%|██████████| 5/5 [00:01<00:00,  3.23it/s]
+Epoch 3/24
+Train Loss: 1.2421 Train Accuracy: 0.6973
+Val Loss: 1.1011 Val Accuracy: 0.6993
+Epoch 4/24: 100%|██████████| 42/42 [00:14<00:00,  2.92it/s]
+Epoch 4/24: 100%|██████████| 5/5 [00:02<00:00,  2.32it/s]
+Epoch 4/24
+Train Loss: 0.5990 Train Accuracy: 0.8731
+Val Loss: 0.7368 Val Accuracy: 0.7601
+Epoch 5/24: 100%|██████████| 42/42 [00:13<00:00,  3.04it/s]
+Epoch 5/24: 100%|██████████| 5/5 [00:01<00:00,  3.63it/s]
+Epoch 5/24
+Train Loss: 0.3411 Train Accuracy: 0.9288
+Val Loss: 0.5121 Val Accuracy: 0.8446
+Epoch 6/24: 100%|██████████| 42/42 [00:14<00:00,  2.99it/s]
+Epoch 6/24: 100%|██████████| 5/5 [00:01<00:00,  3.75it/s]
+Epoch 6/24
+Train Loss: 0.2260 Train Accuracy: 0.9496
+Val Loss: 0.4299 Val Accuracy: 0.8716
+Epoch 7/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 7/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 7/24
+Train Loss: 0.1676 Train Accuracy: 0.9629
+Val Loss: 0.5042 Val Accuracy: 0.8311
+Epoch 8/24: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 8/24: 100%|██████████| 5/5 [00:01<00:00,  3.65it/s]
+Epoch 8/24
+Train Loss: 0.1574 Train Accuracy: 0.9621
+Val Loss: 0.3951 Val Accuracy: 0.8885
+Epoch 9/24: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 9/24: 100%|██████████| 5/5 [00:01<00:00,  3.59it/s]
+Epoch 9/24
+Train Loss: 0.1197 Train Accuracy: 0.9735
+Val Loss: 0.3194 Val Accuracy: 0.8818
+Epoch 10/24: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 10/24: 100%|██████████| 5/5 [00:01<00:00,  3.70it/s]
+Epoch 10/24
+Train Loss: 0.1182 Train Accuracy: 0.9678
+Val Loss: 0.3685 Val Accuracy: 0.8716
+Epoch 11/24: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 11/24: 100%|██████████| 5/5 [00:01<00:00,  2.73it/s]
+Epoch 11/24
+Train Loss: 0.1072 Train Accuracy: 0.9689
+Val Loss: 0.3285 Val Accuracy: 0.8784
+Epoch 12/24: 100%|██████████| 42/42 [00:14<00:00,  3.00it/s]
+Epoch 12/24: 100%|██████████| 5/5 [00:02<00:00,  2.48it/s]
+Epoch 12/24
+Train Loss: 0.0948 Train Accuracy: 0.9750
+Val Loss: 0.3349 Val Accuracy: 0.8818
+Epoch 13/24: 100%|██████████| 42/42 [00:13<00:00,  3.09it/s]
+Epoch 13/24: 100%|██████████| 5/5 [00:01<00:00,  3.52it/s]
+Epoch 13/24
+Train Loss: 0.0905 Train Accuracy: 0.9758
+Val Loss: 0.3340 Val Accuracy: 0.8953
+Epoch 14/24: 100%|██████████| 42/42 [00:13<00:00,  3.07it/s]
+Epoch 14/24: 100%|██████████| 5/5 [00:01<00:00,  3.73it/s]
+Epoch 14/24
+Train Loss: 0.0721 Train Accuracy: 0.9833
+Val Loss: 0.4200 Val Accuracy: 0.8547
+Epoch 15/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 15/24: 100%|██████████| 5/5 [00:01<00:00,  3.44it/s]
+Epoch 15/24
+Train Loss: 0.0900 Train Accuracy: 0.9784
+Val Loss: 0.2902 Val Accuracy: 0.8953
+Epoch 16/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 16/24: 100%|██████████| 5/5 [00:01<00:00,  3.67it/s]
+Epoch 16/24
+Train Loss: 0.0687 Train Accuracy: 0.9845
+Val Loss: 0.3586 Val Accuracy: 0.8716
+Epoch 17/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 17/24: 100%|██████████| 5/5 [00:01<00:00,  3.49it/s]
+Epoch 17/24
+Train Loss: 0.0595 Train Accuracy: 0.9856
+Val Loss: 0.3257 Val Accuracy: 0.8784
+Epoch 18/24: 100%|██████████| 42/42 [00:14<00:00,  2.99it/s]
+Epoch 18/24: 100%|██████████| 5/5 [00:01<00:00,  3.59it/s]
+Epoch 18/24
+Train Loss: 0.0596 Train Accuracy: 0.9845
+Val Loss: 0.3424 Val Accuracy: 0.8885
+Epoch 19/24: 100%|██████████| 42/42 [00:14<00:00,  2.98it/s]
+Epoch 19/24: 100%|██████████| 5/5 [00:01<00:00,  3.28it/s]
+Epoch 19/24
+Train Loss: 0.0520 Train Accuracy: 0.9879
+Val Loss: 0.3317 Val Accuracy: 0.8851
+Epoch 20/24: 100%|██████████| 42/42 [00:14<00:00,  2.95it/s]
+Epoch 20/24: 100%|██████████| 5/5 [00:02<00:00,  2.27it/s]
+Epoch 20/24
+Train Loss: 0.0482 Train Accuracy: 0.9883
+Val Loss: 0.3332 Val Accuracy: 0.8885
+Epoch 21/24: 100%|██████████| 42/42 [00:13<00:00,  3.07it/s]
+Epoch 21/24: 100%|██████████| 5/5 [00:01<00:00,  3.46it/s]
+Epoch 21/24
+Train Loss: 0.0263 Train Accuracy: 0.9947
+Val Loss: 0.3285 Val Accuracy: 0.8818
+Epoch 22/24: 100%|██████████| 42/42 [00:13<00:00,  3.04it/s]
+Epoch 22/24: 100%|██████████| 5/5 [00:01<00:00,  3.57it/s]
+Epoch 22/24
+Train Loss: 0.0588 Train Accuracy: 0.9867
+Val Loss: 0.3222 Val Accuracy: 0.8953
+Epoch 23/24: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 23/24: 100%|██████████| 5/5 [00:01<00:00,  3.54it/s]
+Epoch 23/24
+Train Loss: 0.0554 Train Accuracy: 0.9879
+Val Loss: 0.3176 Val Accuracy: 0.9122
+Epoch 24/24: 100%|██████████| 42/42 [00:13<00:00,  3.02it/s]
+Epoch 24/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 24/24
+Train Loss: 0.0493 Train Accuracy: 0.9886
+Val Loss: 0.3120 Val Accuracy: 0.9020
+Training and evaluating seq_finetune_resnet model
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  284.71 K
+fwd MACs:                                                               151.617 GMACs
+fwd FLOPs:                                                              303.912 GFLOPS
+fwd+bwd MACs:                                                           454.851 GMACs
+fwd+bwd FLOPs:                                                          911.735 GFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+ResNet(
+  284.71 K = 100% Params, 151.62 GMACs = 100% MACs, 303.91 GFLOPS = 100% FLOPs
+  (conv1): Conv2d(0 = 0% Params, 9.87 GMACs = 6.5065% MACs, 19.73 GFLOPS = 6.492% FLOPs, 3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 134.22 MFLOPS = 0.0442% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, inplace=True)
+  (maxpool): MaxPool2d(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    0 = 0% Params, 38.65 GMACs = 25.4949% MACs, 77.51 GFLOPS = 25.5044% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7475% MACs, 38.76 GFLOPS = 12.7522% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7475% MACs, 38.76 GFLOPS = 12.7522% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6622% MACs, 68.84 GFLOPS = 22.6503% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9147% MACs, 30.13 GFLOPS = 9.9147% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.09 GFLOPS = 0.3588% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7475% MACs, 38.71 GFLOPS = 12.7356% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6622% MACs, 68.78 GFLOPS = 22.631% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9147% MACs, 30.1 GFLOPS = 9.9036% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3561% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7475% MACs, 38.68 GFLOPS = 12.7273% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    0 = 0% Params, 34.36 GMACs = 22.6622% MACs, 68.75 GFLOPS = 22.6213% FLOPs
+    (0): BasicBlock(
+      0 = 0% Params, 15.03 GMACs = 9.9147% MACs, 30.08 GFLOPS = 9.8981% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3547% FLOPs
+        (0): Conv2d(0 = 0% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      0 = 0% Params, 19.33 GMACs = 12.7475% MACs, 38.67 GFLOPS = 12.7232% FLOPs
+      (conv1): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(0 = 0% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(0 = 0% Params, 0 MACs = 0% MACs, 2.1 MFLOPS = 0.0007% FLOPs, output_size=(1, 1))
+  (fc): Sequential(
+    284.71 K = 100% Params, 18.19 MMACs = 0.012% MACs, 36.41 MFLOPS = 0.012% FLOPs
+    (0): Linear(262.66 K = 92.2523% Params, 16.78 MMACs = 0.0111% MACs, 33.55 MFLOPS = 0.011% FLOPs, in_features=512, out_features=512, bias=True)
+    (1): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 32.77 KFLOPS = 0% FLOPs)
+    (2): Linear(22.06 K = 7.7477% Params, 1.41 MMACs = 0.0009% MACs, 2.82 MFLOPS = 0.0009% FLOPs, in_features=512, out_features=43, bias=True)
+  )
+)
+---------------------------------------------------------------------------------------------------
+Epoch 1/6: 100%|██████████| 42/42 [00:11<00:00,  3.71it/s]
+Epoch 1/6: 100%|██████████| 5/5 [00:01<00:00,  3.61it/s]
+Epoch 1/6
+Train Loss: 4.0987 Train Accuracy: 0.0515
+Val Loss: 3.6907 Val Accuracy: 0.1351
+Epoch 2/6: 100%|██████████| 42/42 [00:11<00:00,  3.76it/s]
+Epoch 2/6: 100%|██████████| 5/5 [00:01<00:00,  3.50it/s]
+Epoch 2/6
+Train Loss: 3.1196 Train Accuracy: 0.2170
+Val Loss: 2.8474 Val Accuracy: 0.2905
+Epoch 3/6: 100%|██████████| 42/42 [00:11<00:00,  3.75it/s]
+Epoch 3/6: 100%|██████████| 5/5 [00:01<00:00,  3.63it/s]
+Epoch 3/6
+Train Loss: 2.4636 Train Accuracy: 0.3773
+Val Loss: 2.3226 Val Accuracy: 0.3953
+Epoch 4/6: 100%|██████████| 42/42 [00:10<00:00,  3.88it/s]
+Epoch 4/6: 100%|██████████| 5/5 [00:01<00:00,  3.43it/s]
+Epoch 4/6
+Train Loss: 2.0765 Train Accuracy: 0.4742
+Val Loss: 2.0873 Val Accuracy: 0.4392
+Epoch 5/6: 100%|██████████| 42/42 [00:10<00:00,  4.16it/s]
+Epoch 5/6: 100%|██████████| 5/5 [00:02<00:00,  2.32it/s]
+Epoch 5/6
+Train Loss: 1.8702 Train Accuracy: 0.5523
+Val Loss: 1.9712 Val Accuracy: 0.4797
+Epoch 6/6: 100%|██████████| 42/42 [00:09<00:00,  4.31it/s]
+Epoch 6/6: 100%|██████████| 5/5 [00:01<00:00,  2.53it/s]
+Epoch 6/6
+Train Loss: 1.8019 Train Accuracy: 0.5545
+Val Loss: 1.9565 Val Accuracy: 0.4831
+
+------------------------------------- Calculate Flops Results -------------------------------------
+Notations:
+number of parameters (Params), number of multiply-accumulate operations(MACs),
+number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),
+fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),
+default model backpropagation takes 2.00 times as much computation as forward propagation.
+
+Total Training Params:                                                  11.46 M 
+fwd MACs:                                                               151.617 GMACs
+fwd FLOPs:                                                              303.912 GFLOPS
+fwd+bwd MACs:                                                           454.851 GMACs
+fwd+bwd FLOPs:                                                          911.735 GFLOPS
+
+-------------------------------- Detailed Calculated FLOPs Results --------------------------------
+Each module caculated is listed after its name in the following order: 
+params, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs
+
+Note: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). 
+ They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.
+2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.
+
+ResNet(
+  11.46 M = 100% Params, 151.62 GMACs = 100% MACs, 303.91 GFLOPS = 100% FLOPs
+  (conv1): Conv2d(9.41 K = 0.0821% Params, 9.87 GMACs = 6.5065% MACs, 19.73 GFLOPS = 6.492% FLOPs, 3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 134.22 MFLOPS = 0.0442% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, inplace=True)
+  (maxpool): MaxPool2d(0 = 0% Params, 0 MACs = 0% MACs, 67.11 MFLOPS = 0.0221% FLOPs, kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    147.97 K = 1.291% Params, 38.65 GMACs = 25.4949% MACs, 77.51 GFLOPS = 25.5044% FLOPs
+    (0): BasicBlock(
+      73.98 K = 0.6455% Params, 19.33 GMACs = 12.7475% MACs, 38.76 GFLOPS = 12.7522% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3216% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3216% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (1): BasicBlock(
+      73.98 K = 0.6455% Params, 19.33 GMACs = 12.7475% MACs, 38.76 GFLOPS = 12.7522% FLOPs
+      (conv1): Conv2d(36.86 K = 0.3216% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, inplace=True)
+      (conv2): Conv2d(36.86 K = 0.3216% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128 = 0.0011% Params, 0 MACs = 0% MACs, 33.55 MFLOPS = 0.011% FLOPs, 64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer2): Sequential(
+    525.57 K = 4.5856% Params, 34.36 GMACs = 22.6622% MACs, 68.84 GFLOPS = 22.6503% FLOPs
+    (0): BasicBlock(
+      230.14 K = 2.008% Params, 15.03 GMACs = 9.9147% MACs, 30.13 GFLOPS = 9.9147% FLOPs
+      (conv1): Conv2d(73.73 K = 0.6433% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0022% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.2866% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0022% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        8.45 K = 0.0737% Params, 536.87 MMACs = 0.3541% MACs, 1.09 GFLOPS = 0.3588% FLOPs
+        (0): Conv2d(8.19 K = 0.0715% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256 = 0.0022% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      295.42 K = 2.5776% Params, 19.33 GMACs = 12.7475% MACs, 38.71 GFLOPS = 12.7356% FLOPs
+      (conv1): Conv2d(147.46 K = 1.2866% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256 = 0.0022% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, inplace=True)
+      (conv2): Conv2d(147.46 K = 1.2866% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256 = 0.0022% Params, 0 MACs = 0% MACs, 16.78 MFLOPS = 0.0055% FLOPs, 128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer3): Sequential(
+    2.1 M = 18.3201% Params, 34.36 GMACs = 22.6622% MACs, 68.78 GFLOPS = 22.631% FLOPs
+    (0): BasicBlock(
+      919.04 K = 8.0187% Params, 15.03 GMACs = 9.9147% MACs, 30.1 GFLOPS = 9.9036% FLOPs
+      (conv1): Conv2d(294.91 K = 2.5731% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0045% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.1463% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0045% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        33.28 K = 0.2904% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3561% FLOPs
+        (0): Conv2d(32.77 K = 0.2859% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512 = 0.0045% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      1.18 M = 10.3014% Params, 19.33 GMACs = 12.7475% MACs, 38.68 GFLOPS = 12.7273% FLOPs
+      (conv1): Conv2d(589.82 K = 5.1463% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512 = 0.0045% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, inplace=True)
+      (conv2): Conv2d(589.82 K = 5.1463% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512 = 0.0045% Params, 0 MACs = 0% MACs, 8.39 MFLOPS = 0.0028% FLOPs, 256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (layer4): Sequential(
+    8.39 M = 73.2359% Params, 34.36 GMACs = 22.6622% MACs, 68.75 GFLOPS = 22.6213% FLOPs
+    (0): BasicBlock(
+      3.67 M = 32.0479% Params, 15.03 GMACs = 9.9147% MACs, 30.08 GFLOPS = 9.8981% FLOPs
+      (conv1): Conv2d(1.18 M = 10.2925% Params, 4.83 GMACs = 3.1869% MACs, 9.66 GFLOPS = 3.1798% FLOPs, 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0089% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 20.585% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0089% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (downsample): Sequential(
+        132.1 K = 1.1525% Params, 536.87 MMACs = 0.3541% MACs, 1.08 GFLOPS = 0.3547% FLOPs
+        (0): Conv2d(131.07 K = 1.1436% Params, 536.87 MMACs = 0.3541% MACs, 1.07 GFLOPS = 0.3533% FLOPs, 256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(1.02 K = 0.0089% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      4.72 M = 41.1879% Params, 19.33 GMACs = 12.7475% MACs, 38.67 GFLOPS = 12.7232% FLOPs
+      (conv1): Conv2d(2.36 M = 20.585% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(1.02 K = 0.0089% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, inplace=True)
+      (conv2): Conv2d(2.36 M = 20.585% Params, 9.66 GMACs = 6.3737% MACs, 19.33 GFLOPS = 6.3595% FLOPs, 512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(1.02 K = 0.0089% Params, 0 MACs = 0% MACs, 4.19 MFLOPS = 0.0014% FLOPs, 512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(0 = 0% Params, 0 MACs = 0% MACs, 2.1 MFLOPS = 0.0007% FLOPs, output_size=(1, 1))
+  (fc): Sequential(
+    284.71 K = 2.4842% Params, 18.19 MMACs = 0.012% MACs, 36.41 MFLOPS = 0.012% FLOPs
+    (0): Linear(262.66 K = 2.2917% Params, 16.78 MMACs = 0.0111% MACs, 33.55 MFLOPS = 0.011% FLOPs, in_features=512, out_features=512, bias=True)
+    (1): ReLU(0 = 0% Params, 0 MACs = 0% MACs, 32.77 KFLOPS = 0% FLOPs)
+    (2): Linear(22.06 K = 0.1925% Params, 1.41 MMACs = 0.0009% MACs, 2.82 MFLOPS = 0.0009% FLOPs, in_features=512, out_features=43, bias=True)
+  )
+)
+---------------------------------------------------------------------------------------------------
+Epoch 1/24: 100%|██████████| 42/42 [00:14<00:00,  2.95it/s]
+Epoch 1/24: 100%|██████████| 5/5 [00:01<00:00,  3.32it/s]
+Epoch 1/24
+Train Loss: 1.6664 Train Accuracy: 0.5879
+Val Loss: 1.6236 Val Accuracy: 0.5777
+Epoch 2/24: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 2/24: 100%|██████████| 5/5 [00:01<00:00,  3.60it/s]
+Epoch 2/24
+Train Loss: 1.1555 Train Accuracy: 0.7277
+Val Loss: 1.1255 Val Accuracy: 0.6453
+Epoch 3/24: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 3/24: 100%|██████████| 5/5 [00:01<00:00,  3.66it/s]
+Epoch 3/24
+Train Loss: 0.6232 Train Accuracy: 0.8470
+Val Loss: 0.7098 Val Accuracy: 0.7703
+Epoch 4/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 4/24: 100%|██████████| 5/5 [00:01<00:00,  3.63it/s]
+Epoch 4/24
+Train Loss: 0.3170 Train Accuracy: 0.9246
+Val Loss: 0.5700 Val Accuracy: 0.8108
+Epoch 5/24: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 5/24: 100%|██████████| 5/5 [00:01<00:00,  3.59it/s]
+Epoch 5/24
+Train Loss: 0.2466 Train Accuracy: 0.9337
+Val Loss: 0.4211 Val Accuracy: 0.8547
+Epoch 6/24: 100%|██████████| 42/42 [00:13<00:00,  3.01it/s]
+Epoch 6/24: 100%|██████████| 5/5 [00:01<00:00,  3.57it/s]
+Epoch 6/24
+Train Loss: 0.2179 Train Accuracy: 0.9428
+Val Loss: 0.5561 Val Accuracy: 0.7939
+Epoch 7/24: 100%|██████████| 42/42 [00:14<00:00,  2.96it/s]
+Epoch 7/24: 100%|██████████| 5/5 [00:01<00:00,  3.15it/s]
+Epoch 7/24
+Train Loss: 0.1860 Train Accuracy: 0.9473
+Val Loss: 0.5662 Val Accuracy: 0.8209
+Epoch 8/24: 100%|██████████| 42/42 [00:14<00:00,  2.98it/s]
+Epoch 8/24: 100%|██████████| 5/5 [00:02<00:00,  2.35it/s]
+Epoch 8/24
+Train Loss: 0.1840 Train Accuracy: 0.9447
+Val Loss: 0.7147 Val Accuracy: 0.8108
+Epoch 9/24: 100%|██████████| 42/42 [00:13<00:00,  3.13it/s]
+Epoch 9/24: 100%|██████████| 5/5 [00:01<00:00,  3.61it/s]
+Epoch 9/24
+Train Loss: 0.1222 Train Accuracy: 0.9644
+Val Loss: 0.6128 Val Accuracy: 0.8176
+Epoch 10/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 10/24: 100%|██████████| 5/5 [00:01<00:00,  3.58it/s]
+Epoch 10/24
+Train Loss: 0.1120 Train Accuracy: 0.9663
+Val Loss: 0.5015 Val Accuracy: 0.8378
+Epoch 11/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 11/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 11/24
+Train Loss: 0.0902 Train Accuracy: 0.9739
+Val Loss: 0.3849 Val Accuracy: 0.8784
+Epoch 12/24: 100%|██████████| 42/42 [00:13<00:00,  3.04it/s]
+Epoch 12/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 12/24
+Train Loss: 0.1073 Train Accuracy: 0.9663
+Val Loss: 0.4205 Val Accuracy: 0.8750
+Epoch 13/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 13/24: 100%|██████████| 5/5 [00:01<00:00,  3.59it/s]
+Epoch 13/24
+Train Loss: 0.0939 Train Accuracy: 0.9739
+Val Loss: 0.3293 Val Accuracy: 0.8885
+Epoch 14/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 14/24: 100%|██████████| 5/5 [00:01<00:00,  3.67it/s]
+Epoch 14/24
+Train Loss: 0.0715 Train Accuracy: 0.9750
+Val Loss: 0.5386 Val Accuracy: 0.8615
+Epoch 15/24: 100%|██████████| 42/42 [00:14<00:00,  2.97it/s]
+Epoch 15/24: 100%|██████████| 5/5 [00:01<00:00,  3.40it/s]
+Epoch 15/24
+Train Loss: 0.0725 Train Accuracy: 0.9811
+Val Loss: 0.3913 Val Accuracy: 0.9020
+Epoch 16/24: 100%|██████████| 42/42 [00:14<00:00,  2.98it/s]
+Epoch 16/24: 100%|██████████| 5/5 [00:02<00:00,  2.34it/s]
+Epoch 16/24
+Train Loss: 0.0744 Train Accuracy: 0.9799
+Val Loss: 0.4339 Val Accuracy: 0.8716
+Epoch 17/24: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 17/24: 100%|██████████| 5/5 [00:01<00:00,  3.68it/s]
+Epoch 17/24
+Train Loss: 0.0686 Train Accuracy: 0.9814
+Val Loss: 0.3367 Val Accuracy: 0.8885
+Epoch 18/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 18/24: 100%|██████████| 5/5 [00:01<00:00,  3.59it/s]
+Epoch 18/24
+Train Loss: 0.0508 Train Accuracy: 0.9856
+Val Loss: 0.2943 Val Accuracy: 0.9155
+Epoch 19/24: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 19/24: 100%|██████████| 5/5 [00:01<00:00,  3.55it/s]
+Epoch 19/24
+Train Loss: 0.0530 Train Accuracy: 0.9852
+Val Loss: 0.2897 Val Accuracy: 0.9020
+Epoch 20/24: 100%|██████████| 42/42 [00:13<00:00,  3.06it/s]
+Epoch 20/24: 100%|██████████| 5/5 [00:01<00:00,  3.62it/s]
+Epoch 20/24
+Train Loss: 0.0505 Train Accuracy: 0.9864
+Val Loss: 0.2641 Val Accuracy: 0.8986
+Epoch 21/24: 100%|██████████| 42/42 [00:13<00:00,  3.05it/s]
+Epoch 21/24: 100%|██████████| 5/5 [00:01<00:00,  3.61it/s]
+Epoch 21/24
+Train Loss: 0.0339 Train Accuracy: 0.9917
+Val Loss: 0.2919 Val Accuracy: 0.8953
+Epoch 22/24: 100%|██████████| 42/42 [00:13<00:00,  3.03it/s]
+Epoch 22/24: 100%|██████████| 5/5 [00:01<00:00,  3.70it/s]
+Epoch 22/24
+Train Loss: 0.0286 Train Accuracy: 0.9924
+Val Loss: 0.2808 Val Accuracy: 0.8953
+Epoch 23/24: 100%|██████████| 42/42 [00:13<00:00,  3.02it/s]
+Epoch 23/24: 100%|██████████| 5/5 [00:01<00:00,  3.45it/s]
+Epoch 23/24
+Train Loss: 0.0378 Train Accuracy: 0.9890
+Val Loss: 0.2771 Val Accuracy: 0.8953
+Epoch 24/24: 100%|██████████| 42/42 [00:14<00:00,  2.94it/s]
+Epoch 24/24: 100%|██████████| 5/5 [00:02<00:00,  2.37it/s]Epoch 24/24
+Train Loss: 0.0365 Train Accuracy: 0.9894
+Val Loss: 0.2776 Val Accuracy: 0.9020

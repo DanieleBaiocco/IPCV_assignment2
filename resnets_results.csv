@@ -1,0 +1,4 @@
+model_name,best_val_acc,flops,macs,n_params
+linear_nofinetune_resnet,0.875,303.878 GFLOPS,151.6 GMACs,11.1986 M
+linear_finetune_resnet,0.912162184715271,303.878 GFLOPS,151.6 GMACs,11.1986 M
+seq_finetune_resnet,0.9155405163764954,303.912 GFLOPS,151.617 GMACs,11.4612 M
